@@ -1,105 +1,57 @@
 #solve for trig roots.
+#using newtons method
 
 import numpy as np
 import sympy as sym
 import matplotlib.pyplot as plt
 
-ax = plt.gca()
-ax.spines['top'].set_color('none')
-ax.spines['left'].set_position('zero')
-ax.spines['right'].set_color('none')
-ax.spines['bottom'].set_position('zero')
+def newton(f,Df,x0,epsilon,max_iter):
+    '''Approximate solution of f(x)=0 by Newton's method.
 
+    Parameters
+    ----------
+    f : function
+        Function for which we are searching for a solution f(x)=0.
+    Df : function
+        Derivative of f(x).
+    x0 : number
+        Initial guess for a solution f(x)=0.
+    epsilon : number
+        Stopping criteria is abs(f(x)) < epsilon.
+    max_iter : integer
+        Maximum number of iterations of Newton's method.
 
-x=sym.Symbol('x')
+    Returns
+    -------
+    xn : number
+        Implement Newton's method: compute the linear approximation
+        of f(x) at xn and find x intercept by the formula
+            x = xn - f(xn)/Df(xn)
+        Continue until abs(f(xn)) < epsilon and return xn.
+        If Df(xn) == 0, return None. If the number of iterations
+        exceeds max_iter, then return None.
 
-#Trigf = cos sin or tan
-#A(Trigf(bx-c))+D
-
-class Trig_Functions:
-    def Graph_trig(self,A,B,C,D):
-        x = np.linspace(-20, 20, 1000)
-
-        if self.trigf == "sin":
-            y = (A * (np.sin(B * x + C)) + D)
-            print("1")
-
-        elif self.trigf == "cos":
-            y = (A * (np.cos(B * x + C)) + D)
-
-        elif self.trigf == "tan":
-            y = (A * (np.tan(B * x + C)) + D)
-
-
-        print("2")
-        plt.plot(x, y, color='red', label="sin")
-        print("3")
-        Trig_Functions.Trig_Roots(self, A, B, C, D)
-        plt.axvline(x=self.root[0], label="root , x = {}".format(self.root[0]))
-
-        plt.legend()
-        plt.show()
-
-
-
-
-
-    def Trig_Roots(self,A,B,C,D):
-
-
-        if self.trigf == "sin":
-            self.root = sym.solve(A * (sym.sin(B * x + C)) + D)
-            print("First two roots: {}".format(self.root))
-
-        elif self.trigf =="cos":
-            self.root = sym.solve(A * sym.cos(B * x + C) + D)
-            print("First two roots: {}".format(self.root))
-
-        else:
-            self.root = sym.solve(A * sym.tan(B * x + C) + D)
-            print("First two roots: {}".format(self.root))
-
-
-
-    def GetTrigF(self):
-
-        self.trigf = input("sin cos or tan?")
-
-
-
-        if self.trigf == "sin" or self.trigf == "cos" or self.trigf == "tan":
-            print("good, now please input the tirg function in standard form")
-
-        else:
-            self.trigf = None
-            print("please input the terms exactly as stated")
-
-        return self.trigf
-
-
-
-
-T = Trig_Functions()
-
-while True:
-
-    trigf = T.GetTrigF()
-
-    if trigf == None:
-        print("Please run again")
-
-    else:
-        A = int(input("A-->"))
-        B = int(input("B-->"))
-        C = int(input("C-->"))
-        D = int(input("D-->"))
-
-        T.Trig_Roots(A, B, C, D)
-        T.Graph_trig(A, B, C, D)
-
-        break
-
-
+    Examples
+    --------
+    >>> f = lambda x: x**2 - x - 1
+    >>> Df = lambda x: 2*x - 1
+    >>> newton(f,Df,1,1e-8,10)
+    Found solution after 5 iterations.
+    1.618033988749989
+    '''
+    xn = x0
+    for n in range(0,max_iter):
+        fxn = f(xn)
+        if abs(fxn) < epsilon:
+            print('Found solution after',n,'iterations.')
+            return xn
+        Dfxn = Df(xn)
+        if Dfxn == 0:
+            print('Zero derivative. No solution found.')
+            return None
+        xn = xn - fxn/Dfxn
+    print('Exceeded maximum iterations. No solution found.')
+    return None
 
 
 

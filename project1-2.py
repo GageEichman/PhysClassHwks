@@ -1,4 +1,4 @@
-#solve for trig roots.
+#solve for trig roots for any trig function, not working currently.
 
 import numpy as np
 import sympy as sym
