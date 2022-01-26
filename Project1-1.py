@@ -63,9 +63,9 @@ class Quad_Functions:
 
 Q = Quad_Functions()
 print("input the Quadratic coefficients")
-A = int(input("a -->"))
-B = int(input("b -->"))
-C = int(input("c -->"))
+A = float(input("a -->"))
+B = float(input("b -->"))
+C = float(input("c -->"))
 
 Q.Quad_roots(A,B,C)
 Q.Quad_Max_Min(A,B,C)
