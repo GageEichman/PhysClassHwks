@@ -8,6 +8,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+#class IntegrationMethods:
+    #throw them all in here and then make class variables
+
 def myfunction(x):
     y = 2.0 * x * x + 3.0 * x + 4.0
     return y
@@ -26,6 +29,15 @@ def rectangular(dx, xmin, xmax):
 
 
 def trapezoidal(dx, xmin, xmax):
+    ysum = 0.0
+    xx = np.arange(xmin, xmax, dx)
+    for x in xx:
+        a = x
+        b = x + dx
+
+
+
+
     ysum = 0.0
     return ysum
 
