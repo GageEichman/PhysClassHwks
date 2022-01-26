@@ -45,43 +45,44 @@ param1=np.array([mu1,sig1])
 y1=myfunction(x,param1)
 yintegrated1,ycumulative1 = rectangular(x,param1)
 
-mu2=0.1
-sig2=0.8
+mu2=0.0
+sig2=1
 param2=np.array([mu2,sig2])
 y2=myfunction(x,param2)
 yintegrated2,ycumulative2 = rectangular(x,param2)
 
-mu3=2
-sig3=.7
+mu3=0.0
+sig3=5
 param3=np.array([mu3,sig3])
 y3=myfunction(x,param3)
 yintegrated3,ycumulative3 = rectangular(x,param3)
 
-mu4=-2.5
-sig4=0.9
+mu4=-2
+sig4=0.5
 param4=np.array([mu4,sig4])
 y4=myfunction(x,param4)
 yintegrated4,ycumulative4 = rectangular(x,param4)
 
-fig, axs = plt.subplots(1,2,sharex = True,sharey = True)
+fig, axs = plt.subplots(1,2,sharex = True,sharey = True,figsize=(10,7), dpi=80)
 fig.suptitle('Numerical Integration', color = "blue")
 fig.patch.set_facecolor('xkcd:mint green')
 
-axs[0].set_title('Original Functions')
+axs[0].set_title('Gaussian Functions')
 axs[0].axhline(y = 0,color = "black")
+axs[0].plot(x,y1, color = "r", label = "\u03BC = {}, \u03C3 = {}".format(param1[0],param1[1]))
+axs[0].plot(x,y2, color = "g", label = "\u03BC = {}, \u03C3 = {}".format(param2[0],param2[1]))
+axs[0].plot(x,y3, color = "purple", label = "\u03BC = {}, \u03C3 = {}".format(param3[0],param3[1]))
+axs[0].plot(x,y4, color = "blue", label = "\u03BC = {}, \u03C3 = {}".format(param4[0],param4[1]))
+axs[0].legend(loc ="upper left",prop={'size': 8})
 
-axs[0].plot(x,y1, color = "r")
-axs[0].plot(x,y2, color = "g")
-axs[0].plot(x,y3, color = "purple")
-axs[0].plot(x,y4, color = "blue")
 
-
-axs[1].set_title('Integrated Functions')
+axs[1].set_title('Cumuative Distribution Functions')
 axs[1].axhline(y = 0,color = "black")
-axs[1].plot(x, ycumulative1, color = "r")
-axs[1].plot(x, ycumulative2, color = "g")
-axs[1].plot(x, ycumulative3, color = "purple")
-axs[1].plot(x, ycumulative4, color = "blue")
+axs[1].plot(x, ycumulative1, color = "r", label = "\u03BC = {}, \u03C3 = {}".format(param1[0],param1[1]))
+axs[1].plot(x, ycumulative2, color = "g", label = "\u03BC = {}, \u03C3 = {}".format(param2[0],param2[1]))
+axs[1].plot(x, ycumulative3, color = "purple", label = "\u03BC = {}, \u03C3 = {}".format(param3[0],param3[1]))
+axs[1].plot(x, ycumulative4, color = "blue", label = "\u03BC = {}, \u03C3 = {}".format(param4[0],param4[1]))
+axs[1].legend(loc ="upper left",prop={'size': 8})
 
 
 
