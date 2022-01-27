@@ -8,12 +8,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sympy as sym
 from sympy import *
-
+z = sym.Symbol('x')
 
 class IntegrationMethods:
 
     def myfunction(self,x):
         y = 2.0 * x**2 + 3.0 * x + 4.0
+        return y
+
+    def myIntegral(self,z):
+        y = 2/3 * x**3 + 3/2 * x **2 + 4*x
+        #y = 4*x+3
         return y
 
 
@@ -70,21 +75,23 @@ print('trapezoidal ', result2)
 print('simpsons    ', result3)
 
 #  display the sahpe of function.
-z = sym.Symbol('x')
-print("Derivative to 2z^2 +3z +4 = {}".format(sym.diff(2*z**2 +3*z+4)))
+
+print("Integral to 2z^2 +3z +4 = {}".format(sym.integrate(2*z**2 +3*z+4)),z)
 
 x = np.arange(xmin, xmax, dx)
 y = IM.myfunction(x)
+y1 = IM.myIntegral(x)
 fig = plt.figure(1)
 plt.plot(x, y, 'g')
-fig.text(0.2, 0.8, 'F(x)=2x^2+3x+4', ha='left', va='center')
-fig.text(0.2, 0.7, 'F\'(x)= {}'.format(sym.diff(2*z**2 +3*z+4)), ha='left', va='center')
+plt.plot(x,y1,color = "red")
+fig.text(0.2, 0.85, 'F(x)=2x^2+3x+4', ha='left', va='center', color = "g")
+fig.text(0.2, 0.8, '\u222BF(x)= {}'.format(sym.integrate(2*z**2 + 3*z + 4),z), ha='left', va='center',color = "red")
 r1 = 'rectangular: ' + str(result1)
 r2 = 'trapezoidal: ' + str(result2)
 r3 = 'Simpsons: ' + str(result3)
-fig.text(0.3, 0.60, r1, ha='left', va='center')
-fig.text(0.3, 0.50, r2, ha='left', va='center')
-fig.text(0.3, 0.40, r3, ha='left', va='center')
+fig.text(0.3, 0.70, r1, ha='left', va='center')
+fig.text(0.3, 0.60, r2, ha='left', va='center')
+fig.text(0.3, 0.50, r3, ha='left', va='center')
 #fig.savefig("myintegrationA.png")
 
 
