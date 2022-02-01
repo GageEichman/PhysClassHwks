@@ -25,10 +25,11 @@ import scipy as sci
 
 def DrivingV(a):
     #print(a)
+    a = x
         #changed as to x's, change them back
-    yval = np.zeros(len(x))
-    for i in range(len(x)):
-        xnR = round(x[i],0)
+    yval = np.zeros(len(a))
+    for i in range(len(a)):
+        xnR = round(a[i],0)
         #print(xnR)
         if xnR % 2 == 0:
             yval[i] = 1
@@ -76,9 +77,11 @@ y3 = Eulers(y0,x,T3)
 
 fig = plt.figure()
 fig.patch.set_facecolor('xkcd:mint green')
-plt.plot(x,y,"r")
-plt.plot(x,y1,"purple")
-plt.plot(x,y2,"blue")
-plt.plot(x,y3,"black")
+plt.plot(x,y,"red",label = 'Vin')
+plt.plot(x,y1,"teal", label = "RC = 1 s")
+plt.plot(x,y2,"blue", label = "RC = 0.1 s")
+plt.plot(x,y3,"pink", label = "RC = 0.01 s")
+
+fig.legend(loc ="upper right",prop={'size': 8})
 
 plt.show()
