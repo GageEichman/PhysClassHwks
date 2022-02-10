@@ -3,12 +3,6 @@
 # graph ode solution on top
 
 
-#Write a python code to solve
-#y′(x)=−3.0y(x)+cos(x) for the initial value y(0)=1.0 and reproduce the plot from Wolfram Alpha.
-# Use Euler's method for this assignment and skip Runge-Kutta this time.
-
-#calculate differential of a function
-# then graph the differential and the function in the same space but diff plot
 
 #multiple plots same page:
 "https://matplotlib.org/devdocs/gallery/subplots_axes_and_figures/subplots_demo.html"

@@ -15,3 +15,28 @@ arr = np.array([[1,2,3,4,5], [6,7,8,9,10]])
 print('2nd element on 1st row: ', arr[1, 4])
 '''
 
+
+
+def Eulers(y0, x):
+    nx = len(x)
+    yval = np.zeros(nx)
+    yval[0] = y0
+    i = 0
+    while i < (nx - 1):
+        xn = x[i]
+        yn = yval[i]
+        dx = x[i + 1] - x[i]
+        yval[i + 1] = yn + Fprime(yn, xn) * dx
+        i = i + 1
+    print(yval)
+    return (yval)
+
+dx = 0.1
+x= np.array(0,10,dx)
+
+def xPos(x0):
+    nx = len(x)
+    xval = np.zeros(nx)
+    xval[0]= x0
+    i = 0
+    while 1 <()
