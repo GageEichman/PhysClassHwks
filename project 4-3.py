@@ -26,8 +26,10 @@ def Eulers(y0,x,T):
         xn = x[i]
         yn = yval[i]
         dx = x[i+1]-x[i]
+
         #print(Fprime(yn,xn,T))
         yval[i+1] = yn + Fprime(yn,xn,T)*dx
+
         i = i +1
     #print(yval)
     return(yval)
