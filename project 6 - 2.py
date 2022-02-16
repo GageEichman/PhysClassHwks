@@ -79,7 +79,7 @@ print(axs1[0])
 axs1[0].plt.hist(GaussD1,bins=50)
 axs1.plt.hist(GaussD2,bins=50)
 
-
+aaa
 
 plt.show()
 
