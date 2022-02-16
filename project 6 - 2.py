@@ -1,6 +1,3 @@
-
-
-
 import math
 import matplotlib.pyplot as plt
 import numpy as np
@@ -48,8 +45,30 @@ GaussD2 = np.random.normal(2,1,10000)
 #np.random.normal(stdev, mean value, # of points)
 
 
+fig, axs = plt.subplots(3,1,figsize=(10,10), dpi=100)
+fig.suptitle("2D Gaussian Distribution", color = "blue")
+fig.patch.set_facecolor('xkcd:lavender')
+fig.tight_layout(pad = 3.75)
+
+axs[0].set_title('D1')
+axs[1].set_title('D2')
+axs[2].set_title('D1 and D2')
+
+axs[0].hist(GaussD1, bins = 100, color = "red", label = "projection x")
+axs[1].hist(GaussD1, bins = 100, color = "green", label = "projection y")
+axs[0].SPECIFIC FUNCTION FOR TWO HISTS
+
+fig.legend(loc ="upper right",prop={'size': 10})
+plt.show()
 
 
+
+
+
+
+
+
+'''
 plt.hist(GaussD1,bins=50)
 
 gs_kw = dict(width_ratios=[1.4, 1], height_ratios=[1, 2])
@@ -79,9 +98,9 @@ print(axs1[0])
 axs1[0].plt.hist(GaussD1,bins=50)
 axs1.plt.hist(GaussD2,bins=50)
 
-aaa
 
-plt.show()
+
+
 
 
 
@@ -97,7 +116,7 @@ plt.show()
 
 
 
-'''
+
 def Displacement(List):
 
     disps_x = []
