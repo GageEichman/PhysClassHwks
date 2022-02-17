@@ -14,16 +14,16 @@ fig.patch.set_facecolor('xkcd:lavender')
 fig.tight_layout(pad = 3.75)
 
 
-axs[0].set_title('D1')
-axs[1].set_title('D2')
-axs[2].set_title('D1 and D2')
+axs[0].set_title(label = "\u03BC = 1, \u03C3 = 0")
+axs[1].set_title(label = "\u03BC = 1, \u03C3 = 2")
+axs[2].set_title('2 Dimensional Gaussian Distrbutions')
 
-axs[0].hist(GaussD1, bins = 100, color = "red", label = "projection x",density = True)
+axs[0].hist(GaussD1, bins = 100, color = "red", label = "projection x",density = True, )
 axs[1].hist(GaussD2, bins = 100, color = "green", label = "projection y",density = True)
 
 axs[2].hist2d(GaussD1,GaussD2,density = True, cmap = "Blues",bins = 100 )
 sm = plt.cm.ScalarMappable(cmap="Blues", norm=plt.Normalize(vmin=0, vmax=1))
-plt.colorbar(sm)
+plt.colorbar(sm).set_label("counts in bin")
 
 fig.legend(loc ="upper right",prop={'size': 10})
 
