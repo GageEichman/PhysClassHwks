@@ -1,4 +1,5 @@
 import matplotlib as plt
+import matplotlib.pyplot as plt
 import numpy as np
 import os
 
@@ -14,19 +15,35 @@ values = np.zeros((10,4),dtype = float)
 xypts = "C:/Users/geich/xypts.txt"
 f = open(xypts,"r")
 
-
+j = 0
 for line in f:
+
     z = line.split()
-    xval = z[0]
-    ytrueval = z[1]
-    ysimulated = z[2]
-    stdev = z[3]
-    values[line,0].append(xval)
-    values[line,1].append(ytrueval)
-    values[line,2].append(ysimulated)
-    values[line,3].append(stdev)
+    xval = float(z[0])
+    ytrueval = float(z[1])
+    ysimulated = float(z[2])
+    stdev = float(z[3])
+
+    values[j,0]=(xval)
+    values[j,1]=(ytrueval)
+    values[j,2]=(ysimulated)
+    values[j,3]=(stdev)
+
+    j += 1
+j=0
 
 print(values)
 
+x = values[:,0]
+y = values[:,1]
+
+y1 = values[:,2]
+
+fig = plt.figure()
+fig.patch.set_facecolor('xkcd:mint green')
+fig.suptitle("Theoretical Line Value VS. Simulated Values")
+plt.plot(x,y,color = 'r')
+plt.scatter(x,y1,color = "blue")
+plt.show()
 
 f.close()
