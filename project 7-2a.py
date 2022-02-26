@@ -67,11 +67,45 @@ def GenNewVals(N):
 
 
 
+def WriteValsToFile(N):
+
+    TempVals = GenNewVals(N)
+
+    for i in range(N):
+        TempData = TempVals["vals_{}".format(i)]
+        tempfile = open("C:/Users/geich/Desktop/DataFiles/Data_{}.txt".format(i),"w+")
+        print(TempData)
+
+        for row in TempData:
+            
+            np.savetxt(tempfile,row)
+
+        tempfile.close()
+
+
+
 values, Truexvals, Trueyvals, stdev = Store_constant_values()
-N = 100
+N = 2
 
-print(GenNewVals(N))
+WriteValsToFile(2)
 
+
+
+
+
+
+
+
+'''
+#deletes files in the folder
+for m in range(N):
+    os.remove("C:/Users/geich/Desktop/DataFiles/Data_{}.txt".format(m))
+'''
+
+
+
+'''
+# old code for JUST plotting points
 plt.figure()
 
 for k in range(N):
@@ -80,11 +114,4 @@ for k in range(N):
     plt.scatter(x,y)
 plt.plot(Truexvals,Trueyvals)
 plt.show()
-'''
-AllVals = GenNewVals(10)
-print(AllVals)
-plt.figure()
-
-plt.plot(AllVals[0][:,0],AllVals[0][:,1],color = "red")
-
 '''
