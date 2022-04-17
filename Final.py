@@ -7,7 +7,6 @@
 #in an x-y plane
 
 #Extra things to do (ranked in order from easiest to implement):
-# 1) make coulombs constant and newtons constant scalable
 # 2) make the size of the objects proportional to the mass value
 # 3) show electric and gravitational field lines
 
@@ -16,7 +15,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def get_accel(pos,Mass,G,Softening,N):
+def get_accel(pos,Mass,G,Softening,N,Charge,K):
     #pos matrix of all initial positions (only initial until function is called)
     #mass matrix of all particle masses
     #G gravitational constant
@@ -34,14 +33,17 @@ def get_accel(pos,Mass,G,Softening,N):
             dy = pos[j,1] - pos[i,1]
             dz = pos[j,2] - pos[i,2]
             m = Mass[j]
+            qm1 = Charge[i]/Mass[i]
+            q2 = Charge[j]
+
             dist = (dx**2+dy**2+dz**2+Softening**2)**(-3/2) #just multiply by dist, includes 1/ in the negative sign
 
 
             # += in this context means add this value to the original value everytime the function is called
 
-            accel[i,0] += G * m * dx * dist #accel in x for ith particle
-            accel[i,1] += G * m * dy * dist #accel in y for ith particle
-            accel[i,2] += G * m * dz * dist #accel in z for ith particle
+            accel[i,0] += (G * m * dx * dist) - (K * qm1 * q2 * dx * dist)  #accel in x for ith particle
+            accel[i,1] += (G * m * dy * dist) - (K * qm1 * q2 * dy * dist)  #accel in y for ith particle
+            accel[i,2] += (G * m * dz * dist) - (K * qm1 * q2 * dz * dist)  #accel in z for ith particle
 
     return accel
 
@@ -51,12 +53,13 @@ def get_accel(pos,Mass,G,Softening,N):
 def main():
 
     # set parameters
-    N = 20              # Number of Particles
+    N = 3              # Number of Particles
     t = 0
     tFinal = 10         # start at 0 seconds and go to 10 seconds
     dt = 0.1            #timestep value
     Softening = 0.1     # "minimum distance"
     G = 1               # value of the gravitational constant
+    K = 1
     plotRealTime = True # to plot graphs as the simukation advances
 
     #initial conidtions
@@ -65,15 +68,25 @@ def main():
     Mass = 25 * np.ones((N,1))/N   #gives uniform mass distribution, every particle has mass 25/N
     pos = np.random.randn(N,3)     # random number for particle position
     vel = np.random.randn(N,3)
-
+#--------- loop below gives a charge array with uniform charge where 1/2 is negative and 1/2 is positive
+    Charge = 25 * np.ones((N, 1)) / N
+    q = 0
+    for i in range(len(Charge)):
+        Charge[i] = Charge[i] * -1
+        q += 1
+        if q >= round(N / 2):
+            break
+#---------
     vel -= np.mean(Mass * vel,0) / np.mean(Mass) # covnerting to COM frame
-    acc = get_accel(pos,Mass,G,Softening,N)         # provide initial acceleration before particles start moving
+    acc = get_accel(pos,Mass,G,Softening,N,Charge,K)         # provide initial acceleration before particles start moving
 
     # number of timesteps (frames)
     Nt = int(np.ceil(tFinal/dt))
 
     #save particle locations so we can animate them later
     pos_save = np.zeros((N, 3, Nt + 1)) #like a 3d brick where each slice of the brick is a frame/ all positions at time t
+
+
     pos_save[:, :, 0] = pos
     t_all = np.arange(Nt + 1) * dt # list of incremented time steps t = (0.1s,0.2s,....)
 
@@ -88,7 +101,7 @@ def main():
 
         pos = pos + vel * dt    # update position using velocity from before
 
-        acc = get_accel(pos, Mass, G, Softening,N)  # update acceleration
+        acc = get_accel(pos, Mass, G, Softening,N,Charge,K)  # update acceleration
 
         vel = vel + acc * dt / 2.0  #update veloctiy with new acceleration
         t = t + dt  #advance time
@@ -101,13 +114,29 @@ def main():
             plt.sca(ax1)
             plt.cla()
 
+
             # the max bit makes it so that not ALL of the trails are saved, and the start dissappearing after more than 50 timesteps have elapsed
             xx = pos_save[:, 0, max(i - 50, 0):i + 1] #save all saved positions up until the current one as xx
             yy = pos_save[:, 1, max(i - 50, 0):i + 1] #save all saved positions up until the current one as yy
-            print(xx)
 
-            plt.scatter(xx, yy, s=1, color=[.7, .7, 1])             #plot previous point from possave (trail, light blue)
-            plt.scatter(pos[:, 0], pos[:, 1], s=10, color='blue')   #plot current points (dot, dark blue)
+
+
+
+            #plt.scatter(xx, yy, s=1, color=[.7, .7, 1])             #plot previous point from possave (trail, light blue)
+            #plt.scatter(pos[:, 0], pos[:, 1], s=10, color='black')   #plot current points (dot, dark blue)
+
+            for j in range(len(Charge)):
+                if Charge[j] < 0:
+                    xneg = pos_save[j,0,max(i - 40, 0):i + 1]
+                    yneg = pos_save[j, 1, max(i - 40, 0):i + 1]
+                    plt.scatter(xneg, yneg, s=1, color=[.7, .7, 1])
+                    plt.scatter(pos[j, 0], pos[j, 1], s=10, color='blue')
+                if Charge[j] >= 0:
+                    xpos = pos_save[j, 0, max(i - 40, 0):i + 1]
+                    ypos = pos_save[j, 1, max(i - 40, 0):i + 1]
+                    plt.scatter(xpos, ypos, s=1, color=[1, .7, .7])
+                    plt.scatter(pos[j, 0], pos[j, 1], s=10, color='red')
+
 
 
             ax1.set(xlim=(-4, 4), ylim=(-4, 4))
@@ -115,7 +144,7 @@ def main():
             ax1.set_xticks([-4,-3,-2, -1, 0, 1, 2,3,4])
             ax1.set_yticks([-4,-3,-2, -1, 0, 1, 2,3,4])
 
-            plt.pause(0.01)  # this loop basically just updates the graph every 0.001 seconds, creating a new graph. however the pos save allows you to update the next frame with the position of the particle in the old frame
+            plt.pause(0.01)  # this loop basically just updates the graph every 0.01 seconds, creating a new graph. however the pos save allows you to update the next frame with the position of the particle in the old frame
 
     plt.show()
 
@@ -125,6 +154,7 @@ def main():
 
 
 main()
+
 
 
 
