@@ -6,12 +6,11 @@
 # each particle moves according to coulombs law and newtons law of gravitation
 #in an x-y plane
 
-#Extra things to do (ranked in order from easiest to implement):
-#1) make the mass and charge within a range (0-20) but diff mass on each object
-# 2) make the size of the objects proportional to the mass value
+#Extra things to do (ranked in order from easiest to implement
 # 2.5 ) make graphs of the distributions (average velocity/ KE, AVG energy (constant) + ke and pe vs time)
 # 3) show electric and gravitational field lines
 
+#THIS ONE MAKES THE 2D SIMULATION
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -55,29 +54,28 @@ def get_accel(pos,Mass,G,Softening,N,Charge,K):
 def main():
 
     # set parameters
-    N = 9              # Number of Particles
+    N = 8               # Number of Particles
     t = 0
     tFinal = 10         # start at 0 seconds and go to 10 seconds
     dt = 0.1            #timestep value
     Softening = 0.1     # "minimum distance"
     G = 1               # value of the gravitational constant
-    K = 1
+    K = 10
     plotRealTime = True # to plot graphs as the simukation advances
 
     #initial conidtions
     np.random.seed(13)
+    Mass = np.ones((N, 1))
+    for i in range(N):
+        Mass[i] = np.random.randint(1,25)
 
-    Mass = 25*np.ones((N,1))/N  #gives uniform mass distribution, every particle has mass 25/N
     pos = np.random.randn(N,3)     # random number for particle position
     vel = np.random.randn(N,3)
 #--------- loop below gives a charge array with uniform charge where 1/2 is negative and 1/2 is positive
-    Charge = np.random.randint(-15,15) * np.ones((N, 1))/N
-    q = 0
-    for i in range(len(Charge)):
-        Charge[i] = Charge[i] * -1
-        q += 1
-        if q >= round(N / 2):
-            break
+    Charge = np.ones((N, 1))
+    for i in range(N):
+        Charge[i] = 25 * np.random.uniform(-1,1)
+
 #---------
     vel -= np.mean(Mass * vel,0) / np.mean(Mass) # covnerting to COM frame
     acc = get_accel(pos,Mass,G,Softening,N,Charge,K)         # provide initial acceleration before particles start moving
@@ -94,6 +92,11 @@ def main():
 
     #matplotlib figure settings
     fig = plt.figure(figsize=(8, 8), dpi=100)
+    fig.suptitle('N-Body Simulation', color="Black",font="serif",size="20")
+    #fig.set_title("K/G = ")
+    plt.legend(loc="upper right")
+    fig.text(0.42, 0.93, "K/G = {}".format(K/G), ha='left', va='top',size="10")
+    fig.patch.set_facecolor('xkcd:beige')
     ax1 = plt.subplot()
 
 
@@ -130,13 +133,13 @@ def main():
                 if Charge[j] < 0:
                     xneg = pos_save[j,0,max(i - 40, 0):i + 1]
                     yneg = pos_save[j, 1, max(i - 40, 0):i + 1]
-                    plt.scatter(xneg, yneg, s=1, color=[.7, .7, 1])
-                    plt.scatter(pos[j, 0], pos[j, 1], s=10, color='blue')
+                    plt.scatter(xneg, yneg, s=Mass[j]*1, color=[.7, .7, 1],zorder=5,marker="x")
+                    plt.scatter(pos[j, 0], pos[j, 1], s= Mass[j]*10, color='blue',edgecolors='black',zorder = 20)
                 if Charge[j] >= 0:
                     xpos = pos_save[j, 0, max(i - 40, 0):i + 1]
                     ypos = pos_save[j, 1, max(i - 40, 0):i + 1]
-                    plt.scatter(xpos, ypos, s=1, color=[1, .7, .7])
-                    plt.scatter(pos[j, 0], pos[j, 1], s=10, color='red')
+                    plt.scatter(xpos, ypos, s=Mass[j]*1, color=[1, .7, .7],zorder=5,marker="x")
+                    plt.scatter(pos[j, 0], pos[j, 1], s=Mass[j]*10, color='red',edgecolors='black',zorder = 20)
 
 
 
@@ -146,6 +149,7 @@ def main():
             ax1.set_yticks([-4,-3,-2, -1, 0, 1, 2,3,4])
 
             plt.pause(0.01)  # this loop basically just updates the graph every 0.01 seconds, creating a new graph. however the pos save allows you to update the next frame with the position of the particle in the old frame
+    #plt.get_current_fig_manager().full_screen_toggle()
 
     plt.show()
 
