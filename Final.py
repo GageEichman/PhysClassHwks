@@ -7,7 +7,9 @@
 #in an x-y plane
 
 #Extra things to do (ranked in order from easiest to implement):
+#1) make the mass and charge within a range (0-20) but diff mass on each object
 # 2) make the size of the objects proportional to the mass value
+# 2.5 ) make graphs of the distributions (average velocity/ KE, AVG energy (constant) + ke and pe vs time)
 # 3) show electric and gravitational field lines
 
 
@@ -53,7 +55,7 @@ def get_accel(pos,Mass,G,Softening,N,Charge,K):
 def main():
 
     # set parameters
-    N = 3              # Number of Particles
+    N = 9              # Number of Particles
     t = 0
     tFinal = 10         # start at 0 seconds and go to 10 seconds
     dt = 0.1            #timestep value
@@ -65,11 +67,11 @@ def main():
     #initial conidtions
     np.random.seed(13)
 
-    Mass = 25 * np.ones((N,1))/N   #gives uniform mass distribution, every particle has mass 25/N
+    Mass = 25*np.ones((N,1))/N  #gives uniform mass distribution, every particle has mass 25/N
     pos = np.random.randn(N,3)     # random number for particle position
     vel = np.random.randn(N,3)
 #--------- loop below gives a charge array with uniform charge where 1/2 is negative and 1/2 is positive
-    Charge = 25 * np.ones((N, 1)) / N
+    Charge = np.random.randint(-15,15) * np.ones((N, 1))/N
     q = 0
     for i in range(len(Charge)):
         Charge[i] = Charge[i] * -1
@@ -116,16 +118,15 @@ def main():
 
 
             # the max bit makes it so that not ALL of the trails are saved, and the start dissappearing after more than 50 timesteps have elapsed
+            # code before seperating into pos and neg
+            '''
             xx = pos_save[:, 0, max(i - 50, 0):i + 1] #save all saved positions up until the current one as xx
             yy = pos_save[:, 1, max(i - 50, 0):i + 1] #save all saved positions up until the current one as yy
-
-
-
-
             #plt.scatter(xx, yy, s=1, color=[.7, .7, 1])             #plot previous point from possave (trail, light blue)
             #plt.scatter(pos[:, 0], pos[:, 1], s=10, color='black')   #plot current points (dot, dark blue)
+            '''
 
-            for j in range(len(Charge)):
+            for j in (range(len(Charge))):
                 if Charge[j] < 0:
                     xneg = pos_save[j,0,max(i - 40, 0):i + 1]
                     yneg = pos_save[j, 1, max(i - 40, 0):i + 1]
