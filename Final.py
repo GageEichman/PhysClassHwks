@@ -8,12 +8,12 @@
 
 #Extra things to do (ranked in order from easiest to implement
 # 2.5 ) make graphs of the distributions (average velocity/ KE, AVG energy (constant) + ke and pe vs time)
-# 3) show electric and gravitational field lines
 
 #THIS ONE MAKES THE 2D SIMULATION
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 
 
 def get_accel(pos,Mass,G,Softening,N,Charge,K):
@@ -94,8 +94,8 @@ def main():
     fig = plt.figure(figsize=(8, 8), dpi=100)
     fig.suptitle('N-Body Simulation', color="Black",font="serif",size="20")
     #fig.set_title("K/G = ")
-    plt.legend(loc="upper right")
     fig.text(0.42, 0.93, "K/G = {}".format(K/G), ha='left', va='top',size="10")
+
     fig.patch.set_facecolor('xkcd:beige')
     ax1 = plt.subplot()
 
@@ -148,8 +148,14 @@ def main():
             ax1.set_xticks([-4,-3,-2, -1, 0, 1, 2,3,4])
             ax1.set_yticks([-4,-3,-2, -1, 0, 1, 2,3,4])
 
+            red_patch = mpatches.Patch(color='red', label='Positive Charge')
+            blue_patch = mpatches.Patch(color='blue', label='Negative Charge')
+            ax1.legend(handles=[red_patch, blue_patch],loc="lower left")
+
             plt.pause(0.01)  # this loop basically just updates the graph every 0.01 seconds, creating a new graph. however the pos save allows you to update the next frame with the position of the particle in the old frame
     #plt.get_current_fig_manager().full_screen_toggle()
+
+
 
     plt.show()
 

@@ -13,6 +13,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 
 
 def get_accel(pos, Mass, G, Softening, N, Charge, K):
@@ -141,6 +142,10 @@ def main():
             ax1.set_xticks([-4, -3, -2, -1, 0, 1, 2, 3, 4])
             ax1.set_yticks([-4, -3, -2, -1, 0, 1, 2, 3, 4])
             ax1.set_zticks([-4, -3, -2, -1, 0, 1, 2, 3, 4])
+
+            red_patch = mpatches.Patch(color='red', label='Positive Charge')
+            blue_patch = mpatches.Patch(color='blue', label='Negative Charge')
+            ax1.legend(handles=[red_patch, blue_patch], loc="lower left")
 
             plt.pause(0.01)  # this loop basically just updates the graph every 0.01 seconds, creating a new graph. however the pos save allows you to update the next frame with the position of the particle in the old frame
     # plt.get_current_fig_manager().full_screen_toggle()
